@@ -1,5 +1,5 @@
 -- Author: Colton Ogden
--- CET3 Game Development BSCOE 2 - 6
+-- CET3 Game Development BSCOE 2-6
 
 push = require 'push'
 Class = require 'class'
@@ -38,16 +38,16 @@ function love.load()
         vsync = true,
     })
 
-    player1 = Paddle(5, 30, 5, 20)
-    player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
+    AI = Paddle(5, 30, 5, 20)
+    PLAYER = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
 
     ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
     paddleTimer = 0
     paddleRate = 0.5
 
-    player1Score = 0
-    player2Score = 0
+    AIScore = 0
+    PLAYERScore = 0
 
     State:load()
 end
@@ -57,25 +57,25 @@ function love.resize(w, h)
 end
 
 function love.update(dt)
-    if player1:moveUp(ball) then
-        player1.dy = -PADDLE_SPEED
-    elseif player1:moveDown(ball) then
-        player1.dy = PADDLE_SPEED
+    if AI:moveUp(ball) then
+        AI.dy = -PADDLE_SPEED
+    elseif AI:moveDown(ball) then
+        AI.dy = PADDLE_SPEED
     else
-        player1.dy = 0
+        AI.dy = 0
     end
 
     if love.keyboard.isDown('up') then
-        player2.dy = -PADDLE_SPEED
+        PLAYER.dy = -PADDLE_SPEED
     elseif love.keyboard.isDown('down') then
-        player2.dy = PADDLE_SPEED
+        PLAYER.dy = PADDLE_SPEED
     else
-        player2.dy = 0
+        PLAYER.dy = 0
     end
 
     State:update(dt)
-    player1:update(dt)
-    player2:update(dt)
+    AI:update(dt)
+    PLAYER:update(dt)
 end
 
 function love.keypressed(key)
@@ -94,8 +94,8 @@ function love.draw()
 
     State:draw()
 
-    player1:render()
-    player2:render()
+    AI:render()
+    PLAYER:render()
     ball:render()
 
     displayScore()
@@ -107,8 +107,8 @@ end
 
 function displayScore()
     love.graphics.setFont(scoreFont)
-    love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50, VIRTUAL_HEIGHT / 3)
-    love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30, VIRTUAL_HEIGHT / 3)
+    love.graphics.print(tostring(AIScore), VIRTUAL_WIDTH / 2 - 50, VIRTUAL_HEIGHT / 3)
+    love.graphics.print(tostring(PLAYERScore), VIRTUAL_WIDTH / 2 + 30, VIRTUAL_HEIGHT / 3)
 end
 
 function displayFPS()

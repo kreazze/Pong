@@ -1,7 +1,7 @@
 State = {}
 
 function State:load()
-    servingPlayer = 1
+    servingPlayer = 'AI'
     winningPlayer = 0
 
     gameState = 'start'
@@ -12,16 +12,16 @@ end
 function State:update(dt)
     if gameState == 'serve' then
         ball.dy = math.random(-50, 50)
-        if servingPlayer == 1 then
+        if servingPlayer == 'AI' then
             ball.dx = math.random(140, 200)
         else
             ball.dx = -math.random(140, 200)
         end
 
     elseif gameState == 'play' then
-        if ball:collides(player1) then
+        if ball:collides(AI) then
             ball.dx = -ball.dx * 1.03
-            ball.x = player1.x + 5
+            ball.x = AI.x + 5
             sounds['paddle_hit']:play()
 
         --[[ 
@@ -42,9 +42,9 @@ function State:update(dt)
             end
         end
 
-        if ball:collides(player2) then
+        if ball:collides(PLAYER) then
             ball.dx = -ball.dx * 1.03
-            ball.x = player2.x - 5
+            ball.x = PLAYER.x - 5
             sounds['paddle_hit']:play()
 
         --[[ 
@@ -78,12 +78,12 @@ function State:update(dt)
         end
 
         if ball.x < 0 then
-            servingPlayer = 1
-            player2Score = player2Score + 1
+            servingPlayer = 'AI'
+            PLAYERScore = PLAYERScore + 1
             sounds['score']:play()
 
-            if player2Score == 10 then
-                winningPlayer = 2
+            if PLAYERScore == 10 then
+                winningPlayer = 'PLAYER'
                 gameState = 'done'
             else
                 gameState = 'serve'
@@ -92,12 +92,12 @@ function State:update(dt)
         end
 
         if ball.x > VIRTUAL_WIDTH then
-            servingPlayer = 2
-            player1Score = player1Score + 1
+            servingPlayer = 'PLAYER'
+            AIScore = AIScore + 1
             sounds['score']:play()
 
-            if player1Score == 10 then
-                winningPlayer = 1
+            if AIScore == 10 then
+                winningPlayer = 'AI'
                 gameState = 'done'
             else
                 gameState = 'serve'
@@ -125,13 +125,13 @@ function State:keypressed(key)
 
             ball:reset()
 
-            player1Score = 0
-            player2Score = 0
+            AIScore = 0
+            PLAYERScore = 0
 
-            if winningPlayer == 1 then
-                servingPlayer = 2
+            if winningPlayer == 'AI' then
+                servingPlayer = 'PLAYER'
             else
-                servingPlayer = 1
+                servingPlayer = 'AI'
             end
         end
     end
@@ -143,19 +143,19 @@ function State:draw()
         love.graphics.printf('Press Enter to begin!', 0, 20, VIRTUAL_WIDTH, 'center')
     
     elseif gameState == 'serve' then
-        love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve!", 0, 10, VIRTUAL_WIDTH, 'center')
+        love.graphics.printf(tostring(servingPlayer) .. "'s serve!", 0, 10, VIRTUAL_WIDTH, 'center')
         love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
         
     elseif gameState == 'play' then
-        love.graphics.printf('Playing', 0, 20, VIRTUAL_WIDTH, 'center')
+        love.graphics.printf('Playing!', 0, 20, VIRTUAL_WIDTH, 'center')
 
     elseif gameState == 'pause' then
-        love.graphics.printf('Press Enter to resume', 0, 20, VIRTUAL_WIDTH, 'center')
+        love.graphics.printf('Press Enter to resume!', 0, 20, VIRTUAL_WIDTH, 'center')
 
     elseif gameState == 'done' then
         love.graphics.printf('Press Enter to restart!', 0, 30, VIRTUAL_WIDTH, 'center')
         
         love.graphics.setFont(largeFont)
-        love.graphics.printf('Player ' .. tostring(winningPlayer) .. ' wins!', 0, 10, VIRTUAL_WIDTH, 'center')
+        love.graphics.printf(tostring(winningPlayer) .. ' wins!', 0, 10, VIRTUAL_WIDTH, 'center')
     end
 end
