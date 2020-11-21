@@ -43,9 +43,6 @@ function love.load()
 
     ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 
-    paddleTimer = 0
-    paddleRate = 0.5
-
     AIScore = 0
     PLAYERScore = 0
 

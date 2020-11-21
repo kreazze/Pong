@@ -2,7 +2,7 @@ State = {}
 
 function State:load()
     servingPlayer = 'AI'
-    winningPlayer = 0
+    winningPlayer = 'None'
 
     gameState = 'start'
 
