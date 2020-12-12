@@ -15,6 +15,7 @@ VIRTUAL_WIDTH = 432
 VIRTUAL_HEIGHT = 243
 
 PADDLE_SPEED = 200
+AI_SPEED = 150
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -54,12 +55,14 @@ function love.resize(w, h)
 end
 
 function love.update(dt)
-    if AI:moveUp(ball) then
-        AI.dy = -PADDLE_SPEED
-    elseif AI:moveDown(ball) then
-        AI.dy = PADDLE_SPEED
-    else
-        AI.dy = 0
+    if ball.x < VIRTUAL_WIDTH/3 then
+        if AI:moveUp(ball) then
+            AI.dy = -PADDLE_SPEED
+        elseif AI:moveDown(ball) then
+            AI.dy = PADDLE_SPEED
+        else
+            AI.dy = 0
+        end
     end
 
     if love.keyboard.isDown('up') then
